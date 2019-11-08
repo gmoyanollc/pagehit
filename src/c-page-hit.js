@@ -1,20 +1,38 @@
+/*
+
+  110 element click event listener
+  100 onload
+*/
+
 //debugger
 function cPageHit () {
 
   var pageHit = {
     apmSessionId:     getCookie("MRHSession"),
     timestamp:        Date.now(),
+    userId:           _spPageContextInfo.userId,
     geoLocation:      navigator.geolocation,
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
     platform:         navigator.platform,
-    url:              _spPageContextInfo.serverRequestPath,
-    userId:           _spPageContextInfo.userId
+    contextUrl:       _spPageContextInfo.serverRequestPath,
+    click:            {
+      id:             "",
+      href:           ""
+    }
   }
   var error
 
+  function setClick () {
+    if (event) {
+      pageHit.click.id = event.target.id
+      pageHit.click.href = event.target.href
+    }
+      //return { "id": event.target.id, "href": event.target.href }
+  }
+
   // ["JavaScript Cookies" (2019)] (https://www.w3schools.com/js/js_cookies.asp)
-  function getCookie(cname) {
+  function getCookie (cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
@@ -30,7 +48,7 @@ function cPageHit () {
     return "";
   }
 
-  function parseXmlHttpRequestHeader(xmlHttpRequestHeader) {
+  function parseXmlHttpRequestHeader (xmlHttpRequestHeader) {
     var headerItems = xmlHttpRequestHeader.trim().split(/[\r\n]+/);
     var header = {}
   
@@ -81,7 +99,60 @@ function cPageHit () {
   }
 }
 
+function setClickEventElements () {
+
+  function addClickEventListeners (frame) {
+
+    function setClickEventListeners (elements) {
+
+      function addClickEventListener (element) {
+        //element.addEventListener("click", pageHit)
+        console.log("addClickEventListener:", element.tagName, "id:", element.tagName, "href:", element.href)
+      }
+    
+      var elementHref
+      var elementId
+    
+      for (var item = 0; item < elements.length; item++) {
+        elementHref = elements[item].getAttribute("href")
+        //elementId = elements[item].getAttribute("id")
+        //if ((elementHref) && (elementId)) {
+          //if ((elementId != '') && (elementHref != '#'))
+          if (elementHref) {
+            if (elementHref != '#')
+              addClickEventListener(elements[item])
+        }
+      }
+      
+    }
+
+    var pageHitClickEventTags = ["a"]
+    if (typeof(frame) == "undefined")
+      frame = window
+
+    for (var item = 0; item < pageHitClickEventTags.length; item++) {
+
+      //for (var item = 0; item < frame.length; item++) {
+        clickEventElements = frame.document.getElementsByTagName(pageHitClickEventTags[item])
+        setClickEventListeners(clickEventElements)
+      //}
+
+    }
+
+  }
+
+  addClickEventListeners()
+  var iframeElements = document.getElementsByTagName("iframe")
+
+  for (var item; item < iframeElements.length; item++)
+    addClickEventListeners(iframeElements(item))
+
+}
+
 var pageHit = cPageHit()
-pageHit.send( { "siteUrl": "https://mceits.usmc.mil/sites/MCTSSA/Development" }, function (data) {
+// 110 pageHit.send( { "siteUrl": "https://mceits.usmc.mil/sites/MCTSSA/Development" }, function (data) {
+pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
   console.log(data)
 })
+debugger
+setClickEventElements()

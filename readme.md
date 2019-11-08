@@ -1,40 +1,66 @@
 # readme.md
-Page-Hit is for the collection of basic requestor data that is persisted for aggregation and analysis.
+Page-Hit is for the collection of basic requestor and navigation event data that is persisted for the aggregation and analysis of site activity.
 
-The standard JSON format is simple and flat.  The data is easy to marshal into JavaScript as an object for browsers and apps.  If needed, also easy to import into databases and spreadsheet.  Take it further and use the hottest open-source querying and graphing tools/APIs in the industry, such as, [Drill] (https://drill.apache.org/) and [d3] (https://d3js.org/).
+The standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most source libraries also support JSON, such as [Drill] (https://drill.apache.org/) and [d3] (https://d3js.org).   Databases and spreadsheets may also import JSON.  
 
-## Data Point
+## Page-Hit Data Points
+The Page-Hit data points are the following:
 
  * APM (Access Policy Manager) Session Identifier
  * Timestamp
- * GeoLocation
+ * User Id
+ * Geo Location
  * Browser
  * Operating System
  * Platform
- * Url
- * UserId 
+ * Context Url
+ * Click Target
 
 ### Mapping
+
   "apmSessionId":     Response.Cookie.MRHSession
   "timestamp":        Response.Header.Date
+  "userId":           _spPageContextInfo.userId
   "geoLocation":      navigator.geolocation
   "browser":          navigator.userAgent
   "operatingSystem":  navigator.oscpu
   "platform":         navigator.platform
-  "url":             _spPageContextInfo.serverRequestPath
-  "userId":          _spPageContextInfo.userId
+  "contextUrl":       _spPageContextInfo.serverRequestPath
+  "clickTarget":      document.event.target
 
-## JSON
+### JSON
+
 {
   "apmSessionId":   "",
   "timestamp":      "",
+  "userId":         "",
   "geoLocation":    "",
   "browser":        "",
   "operatingSystem: "",
   "platform:        "",
-  "url":            "",
-  "userId":         ""
+  "contextUrl":     "",
+  "click":
+    {
+      "id":         "",
+      "href":     ""
+    }
 }
 
+## Session Data Points
+Session Data Points are for Page-Hit data consolidation and aggregation.
+
+A process is executed at a specified time to produce Session Data Points for a time interval.
+
+Session Data Points are the following:
+
+ * User
+ * Location
+ * Browser
+ * Operating System
+ * Platform
+ * Start Time
+ * End Time
+ * URL Click Path
+
 ---
-20191029
+20191106
