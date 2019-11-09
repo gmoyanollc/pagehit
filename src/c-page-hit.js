@@ -1,34 +1,33 @@
 /*
-
+  120 window click event listener; deprecate element click event listener code
   110 element click event listener
   100 onload
 */
 
-//debugger
-function cPageHit () {
+function cPageHit (clickEvent) {
 
   var pageHit = {
     apmSessionId:     getCookie("MRHSession"),
     timestamp:        Date.now(),
     userId:           _spPageContextInfo.userId,
-    geoLocation:      navigator.geolocation,
+    geoLocation:      getGeoLocation(),
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
     platform:         navigator.platform,
     contextUrl:       _spPageContextInfo.serverRequestPath,
-    click:            {
-      id:             "",
-      href:           ""
+    click:            getClick(clickEvent)
+  }
+  // -220 var error
+  function getGeoLocation () {
+    if (typeof(navigator.geolocation) !== "undefined") {
+      return navigator.geolocation.getCurrentPosition(function (position) { return { "lat": position.coords.latitude, "long": position.coords.longitude } })
     }
   }
-  var error
 
-  function setClick () {
-    if (event) {
-      pageHit.click.id = event.target.id
-      pageHit.click.href = event.target.href
-    }
-      //return { "id": event.target.id, "href": event.target.href }
+  function getClick (event) {
+    if (typeof(event) !== "undefined")
+      if (event)
+        return { "id": event.target.id, "href": event.target.href }
   }
 
   // ["JavaScript Cookies" (2019)] (https://www.w3schools.com/js/js_cookies.asp)
@@ -86,7 +85,7 @@ function cPageHit () {
     xmlHttpRequest.open("POST", request.siteUrl + "/_api/web/lists/getbytitle(%27page_hit%27)/items", true)
     xmlHttpRequest.setRequestHeader("accept", "application/json; odata=verbose")
     xmlHttpRequest.setRequestHeader("content-type", "application/json; odata=verbose")
-    xmlHttpRequest.setRequestHeader("content-length", requestBody.length)
+    //xmlHttpRequest.setRequestHeader("content-length", requestBody.length)
     xmlHttpRequest.setRequestHeader("X-RequestDigest", document.getElementById("__REQUESTDIGEST").value)
     xmlHttpRequest.send(requestBody)
     return
@@ -94,7 +93,7 @@ function cPageHit () {
   }
 
   return {
-    error: error,
+    // -220 error: error,
     send: function (request, resolve) { addListItem(request, resolve) }
   }
 }
@@ -149,10 +148,36 @@ function setClickEventElements () {
 
 }
 
+// +120 begin
+function pageHitWindowClick (event) {
+
+  function isPageHitClickEvent (event) {
+    var isPageHitClickEvent = false
+    if (typeof(event) !== "undefined")
+      if (event) {
+        var pageHitClickEventTags = ['A']
+
+        for (var item = 0; item < pageHitClickEventTags.length; item++) {
+          if (event.target.tagName == pageHitClickEventTags[item])
+            isPageHitClickEvent = true
+        }
+
+      }
+    return isPageHitClickEvent
+  }
+
+  if (isPageHitClickEvent(event)) {
+    var pageHit = cPageHit(event)
+    pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
+      console.log(data)
+    })
+  }
+} // +120 end
+
+debugger
 var pageHit = cPageHit()
 // 110 pageHit.send( { "siteUrl": "https://mceits.usmc.mil/sites/MCTSSA/Development" }, function (data) {
 pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
   console.log(data)
 })
-debugger
-setClickEventElements()
+window.addEventListener("click", pageHitWindowClick)

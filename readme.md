@@ -28,23 +28,24 @@ The Page-Hit data points are the following:
   "contextUrl":       _spPageContextInfo.serverRequestPath
   "clickTarget":      document.event.target
 
-### JSON
+### JSON sample
 
-{
-  "apmSessionId":   "",
-  "timestamp":      "",
-  "userId":         "",
-  "geoLocation":    "",
-  "browser":        "",
-  "operatingSystem: "",
-  "platform:        "",
-  "contextUrl":     "",
-  "click":
-    {
-      "id":         "",
-      "href":     ""
+``` json
+  {
+    "apmSessionId": "89697491a1aaf0874004f2feaada52de",
+    "timestamp": 1573256951923,
+    "userId": 4139,
+    "geoLocation": {},
+    "browser": "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0",
+    "operatingSystem": "Linux x86_64",
+    "platform": "Linux x86_64",
+    "contextUrl": "/sites/MCTSSA/Development/Pages/Home.aspx",
+    "click": {
+      "id": "google",
+      "href": "https://google.com/"
     }
-}
+  }
+```
 
 ## Session Data Points
 Session Data Points are for Page-Hit data consolidation and aggregation.
