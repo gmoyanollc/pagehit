@@ -13,7 +13,7 @@ The Page-Hit data points are the following:
  * Browser
  * Operating System
  * Platform
- * Context Url
+ * Context Hyperlink Reference
  * Click Target
 
 ### Mapping
@@ -25,8 +25,8 @@ The Page-Hit data points are the following:
   "browser":          navigator.userAgent
   "operatingSystem":  navigator.oscpu
   "platform":         navigator.platform
-  "contextUrl":       _spPageContextInfo.serverRequestPath
-  "clickTarget":      document.event.target
+  "contextHref":      window.location.href
+  "click":            document.event.target
 
 ### JSON sample
 
@@ -35,11 +35,14 @@ The Page-Hit data points are the following:
     "apmSessionId": "89697491a1aaf0874004f2feaada52de",
     "timestamp": 1573256951923,
     "userId": 4139,
-    "geoLocation": {},
+    "geoLocation": {
+      "lat": "", 
+      "long": ""
+    },
     "browser": "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0",
     "operatingSystem": "Linux x86_64",
     "platform": "Linux x86_64",
-    "contextUrl": "/sites/MCTSSA/Development/Pages/Home.aspx",
+    "contextHref": "/sites/MCTSSA/Development/Pages/Home.aspx",
     "click": {
       "id": "google",
       "href": "https://google.com/"
@@ -48,7 +51,7 @@ The Page-Hit data points are the following:
 ```
 
 ## Session Data Points
-Session Data Points are for Page-Hit data consolidation and aggregation.
+Session Data Points are derived from Page-Hit data that is consolidated and aggregated by Session.
 
 A process is executed at a specified time to produce Session Data Points for a time interval.
 
@@ -61,7 +64,7 @@ Session Data Points are the following:
  * Platform
  * Start Time
  * End Time
- * URL Click Path
+ * Click Hyperlink Path
 
 ---
-20191106
+20191126

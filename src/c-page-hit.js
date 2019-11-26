@@ -14,7 +14,8 @@ function cPageHit (clickEvent) {
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
     platform:         navigator.platform,
-    contextUrl:       _spPageContextInfo.serverRequestPath,
+    //contextUrl:       _spPageContextInfo.serverRequestPath,
+    contextHref:      window.location.href,
     click:            getClick(clickEvent)
   }
   // -220 var error
