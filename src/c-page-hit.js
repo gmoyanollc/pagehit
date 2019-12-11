@@ -1,9 +1,3 @@
-/*
-  120 window click event listener; deprecate element click event listener code
-  110 element click event listener
-  100 onload
-*/
-
 function cPageHit (clickEvent) {
 
   var pageHit = {
@@ -14,11 +8,10 @@ function cPageHit (clickEvent) {
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
     platform:         navigator.platform,
-    //contextUrl:       _spPageContextInfo.serverRequestPath,
     contextHref:      window.location.href,
     click:            getClick(clickEvent)
   }
-  // -220 var error
+
   function getGeoLocation () {
     if (typeof(navigator.geolocation) !== "undefined") {
       return navigator.geolocation.getCurrentPosition(function (position) { return { "lat": position.coords.latitude, "long": position.coords.longitude } })
@@ -86,7 +79,6 @@ function cPageHit (clickEvent) {
     xmlHttpRequest.open("POST", request.siteUrl + "/_api/web/lists/getbytitle(%27page_hit%27)/items", true)
     xmlHttpRequest.setRequestHeader("accept", "application/json; odata=verbose")
     xmlHttpRequest.setRequestHeader("content-type", "application/json; odata=verbose")
-    //xmlHttpRequest.setRequestHeader("content-length", requestBody.length)
     xmlHttpRequest.setRequestHeader("X-RequestDigest", document.getElementById("__REQUESTDIGEST").value)
     xmlHttpRequest.send(requestBody)
     return
@@ -94,62 +86,10 @@ function cPageHit (clickEvent) {
   }
 
   return {
-    // -220 error: error,
     send: function (request, resolve) { addListItem(request, resolve) }
   }
 }
 
-function setClickEventElements () {
-
-  function addClickEventListeners (frame) {
-
-    function setClickEventListeners (elements) {
-
-      function addClickEventListener (element) {
-        //element.addEventListener("click", pageHit)
-        console.log("addClickEventListener:", element.tagName, "id:", element.tagName, "href:", element.href)
-      }
-    
-      var elementHref
-      var elementId
-    
-      for (var item = 0; item < elements.length; item++) {
-        elementHref = elements[item].getAttribute("href")
-        //elementId = elements[item].getAttribute("id")
-        //if ((elementHref) && (elementId)) {
-          //if ((elementId != '') && (elementHref != '#'))
-          if (elementHref) {
-            if (elementHref != '#')
-              addClickEventListener(elements[item])
-        }
-      }
-      
-    }
-
-    var pageHitClickEventTags = ["a"]
-    if (typeof(frame) == "undefined")
-      frame = window
-
-    for (var item = 0; item < pageHitClickEventTags.length; item++) {
-
-      //for (var item = 0; item < frame.length; item++) {
-        clickEventElements = frame.document.getElementsByTagName(pageHitClickEventTags[item])
-        setClickEventListeners(clickEventElements)
-      //}
-
-    }
-
-  }
-
-  addClickEventListeners()
-  var iframeElements = document.getElementsByTagName("iframe")
-
-  for (var item; item < iframeElements.length; item++)
-    addClickEventListeners(iframeElements(item))
-
-}
-
-// +120 begin
 function pageHitWindowClick (event) {
 
   function isPageHitClickEvent (event) {
@@ -173,12 +113,20 @@ function pageHitWindowClick (event) {
       console.log(data)
     })
   }
-} // +120 end
+}
 
-debugger
 var pageHit = cPageHit()
-// 110 pageHit.send( { "siteUrl": "https://mceits.usmc.mil/sites/MCTSSA/Development" }, function (data) {
 pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
   console.log(data)
 })
-window.addEventListener("click", pageHitWindowClick)
+window.addEventListener("click", pageHitWindowClick, true)
+//document.addEventListener("click", pageHitWindowClick, true)
+/*var windowFrame
+
+for (index = 0; (window.frames.length > index); index++) {
+  windowFrame = window.frames[index]
+  //windowFrame.addEventListener("click", window.top.pageHitWindowClick)
+  windowFrame.addEventListener("click", function () { console.log("child:", document.title, "top:", window.top.document.title) })
+  console.log("child:", windowFrame.document.title, "top:", window.top.document.title)
+  console.log("child:", windowFrame.document.URL, "top:", window.top.document.URL)
+} */

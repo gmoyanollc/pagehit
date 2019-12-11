@@ -1,7 +1,9 @@
 # readme.md
-Page-Hit is for the collection of basic requestor and navigation event data that is persisted for the aggregation and analysis of site activity.
+Page-Hit is for the collection of basic requester and navigation event data that is persisted for the aggregation and analysis of site activity.
 
-The standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most source libraries also support JSON, such as [Drill] (https://drill.apache.org/) and [d3] (https://d3js.org).   Databases and spreadsheets may also import JSON.  
+For a developer, the standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most open source libraries also support JSON, such as [Drill] (https://drill.apache.org/), [Zeppelin] (https://zeppelin.apache.org/), and [d3] (https://d3js.org).  
+
+For a user who does not have programming skills, the open source product [ECharts] (https://echarts.apache.org) is an option to explore for interactive web-based visualization and analysis.  Even databases and spreadsheets may also import the JSON format for analysis and visualization.
 
 ## Page-Hit Data Points
 The Page-Hit data points are the following:
@@ -58,7 +60,7 @@ A process is executed at a specified time to produce Session Data Points for a t
 Session Data Points are the following:
 
  * User
- * Location
+ * Geographic Location
  * Browser
  * Operating System
  * Platform
@@ -66,5 +68,18 @@ Session Data Points are the following:
  * End Time
  * Click Hyperlink Path
 
+### Count Metrics
+Several count metrics are available from the session data points.
+
+Counts are available for the following:
+
+  * Sessions
+  * Browsers
+  * Hyperlinks
+  * Geographic Locations
+  * Operating Systems
+  * Platforms
+  * Users
+
 ---
-20191126
+20191203
