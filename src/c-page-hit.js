@@ -115,9 +115,11 @@ function pageHitWindowClick (event) {
   }
 }
 
-var pageHit = cPageHit()
-pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
-  console.log(data)
+window.addEventListener("load", function (event) {
+  var pageHit = cPageHit()
+  pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
+    console.log(data)
+  })
 })
 window.addEventListener("click", pageHitWindowClick, true)
 //document.addEventListener("click", pageHitWindowClick, true)
