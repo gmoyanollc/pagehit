@@ -21,7 +21,7 @@ function cPageHit (clickEvent) {
   function getClick (event) {
     if (typeof(event) !== "undefined")
       if (event)
-        return { "id": event.target.id, "href": event.target.href }
+        return { "id": event.target.id, "href": event.target.href.replace(/[|&;$%@"<>()+,]/g, '_') }
   }
 
   // ["JavaScript Cookies" (2019)] (https://www.w3schools.com/js/js_cookies.asp)
@@ -97,10 +97,18 @@ function pageHitWindowClick (event) {
     if (typeof(event) !== "undefined")
       if (event) {
         var pageHitClickEventTags = ['A']
+        var unwantedTagValues = ["javascript:", "javascript:_"]
 
         for (var item = 0; item < pageHitClickEventTags.length; item++) {
-          if (event.target.tagName == pageHitClickEventTags[item])
+          if (event.target.tagName == pageHitClickEventTags[item]) {
             isPageHitClickEvent = true
+
+            for (var item = 0; item < unwantedTagValues.length; item++) {
+              if (event.target.href == unwantedTagValues[item])
+                isPageHitClickEvent = false
+            }
+
+          }
         }
 
       }
