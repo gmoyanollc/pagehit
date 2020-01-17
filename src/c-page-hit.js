@@ -121,6 +121,7 @@ function pageHitWindowClick (event) {
     pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
       console.log(data)
     })
+    //event.stopPropagation()
   }
 }
 
@@ -130,7 +131,7 @@ window.addEventListener("load", function (event) {
     console.log(data)
   })
 })
-window.addEventListener("click", pageHitWindowClick, true)
+window.addEventListener("click", pageHitWindowClick, true)  // capturing phase is enabled to apply the event down the DOM and override any stopped bubbling
 //document.addEventListener("click", pageHitWindowClick, true)
 /*var windowFrame
 
