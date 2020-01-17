@@ -8,7 +8,7 @@ function cPageHit (clickEvent) {
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
     platform:         navigator.platform,
-    contextHref:      window.location.href,
+    contextHref:      encodeURI(window.location.href),
     click:            getClick(clickEvent)
   }
 
@@ -21,7 +21,8 @@ function cPageHit (clickEvent) {
   function getClick (event) {
     if (typeof(event) !== "undefined")
       if (event)
-        return { "id": event.target.id, "href": event.target.href.replace(/[|&;$%@"<>()+,]/g, '_') }
+        //return { "id": event.target.id, "href": event.target.href.replace(/[|&;$%@"<>()+,]/g, '_') }
+        return { "id": event.target.id, "href": encodeURI(event.target.href) }
   }
 
   // ["JavaScript Cookies" (2019)] (https://www.w3schools.com/js/js_cookies.asp)
@@ -97,7 +98,7 @@ function pageHitWindowClick (event) {
     if (typeof(event) !== "undefined")
       if (event) {
         var pageHitClickEventTags = ['A']
-        var unwantedTagValues = ["javascript:", "javascript:_"]
+        var unwantedTagValues = ["", "javascript:", "javascript:_", "javascript:{}", "javascript:void_0__"]
 
         for (var item = 0; item < pageHitClickEventTags.length; item++) {
           if (event.target.tagName == pageHitClickEventTags[item]) {
