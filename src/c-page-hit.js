@@ -1,9 +1,10 @@
 function cPageHit (clickEvent) {
 
+  try {
   var pageHit = {
     apmSessionId:     getCookie("MRHSession"),
     timestamp:        Date.now(),
-    userId:           _spPageContextInfo.userId,
+    userId:           (typeof _spPageContextInfo != "undefined" ? _spPageContextInfo.userId : ""),
     geoLocation:      getGeoLocation(),
     browser:          navigator.userAgent,
     operatingSystem:  navigator.oscpu,
@@ -11,6 +12,9 @@ function cPageHit (clickEvent) {
     contextHref:      encodeURI(window.location.href),
     click:            getClick(clickEvent)
   }
+} catch (err) {
+  console.error(err)
+}
 
   function getGeoLocation () {
     if (typeof(navigator.geolocation) !== "undefined") {
@@ -21,7 +25,6 @@ function cPageHit (clickEvent) {
   function getClick (event) {
     if (typeof(event) !== "undefined")
       if (event)
-        //return { "id": event.target.id, "href": event.target.href.replace(/[|&;$%@"<>()+,]/g, '_') }
         return { "id": event.target.id, "href": encodeURI(event.target.href) }
   }
 
@@ -63,17 +66,13 @@ function cPageHit (clickEvent) {
     function xmlHttpRequestListener() {
       endTime = Date.now()
       var totalRequestDuration = (endTime - startTime)
-      console.log("addListItem completed:", endTime, " elasped seconds:", totalRequestDuration / 1000, "http response status:", this.status)
       var xmlHttpResponseHeader = parseXmlHttpRequestHeader(xmlHttpRequest.getAllResponseHeaders())
       var networkDuration = (totalRequestDuration || 0) - (xmlHttpResponseHeader.spclientservicerequestduration || 0) - (xmlHttpResponseHeader.splislatency || 0)
       var resultResponse = { "response": this.responseText, "metadata": { "id": "addListItem", "httpResponseHeader": xmlHttpResponseHeader, "totalRequestDuration": totalRequestDuration, "networkDuration": networkDuration } }
-      console.log(resultResponse.metadata)
       resolve(resultResponse)
     }
   
     startTime = Date.now()
-    console.log("addListItem started: " + startTime)
-    // https://mceits.usmc.mil/sites/MCTSSA/Development/_api/Web/Lists/getbytitle('page_hit')?$select=ListItemEntityTypeFullName ⊢ __metadata.type
     var requestBody = "{ '__metadata': { 'type': 'SP.Data.Page_x005f_hitListItem' }, 'data': '" + JSON.stringify(pageHit) + "'}"
     var xmlHttpRequest = new XMLHttpRequest()
     xmlHttpRequest.addEventListener("readystatechange", xmlHttpRequestListener)
@@ -87,7 +86,12 @@ function cPageHit (clickEvent) {
   }
 
   return {
-    send: function (request, resolve) { addListItem(request, resolve) }
+    send: function (request, resolve) { addListItem(request, resolve) },
+    status: function () { 
+      if (pageHit.userId != "") 
+        return "enabled" 
+      else 
+        return "disabled" }
   }
 }
 
@@ -98,7 +102,7 @@ function pageHitWindowClick (event) {
     if (typeof(event) !== "undefined")
       if (event) {
         var pageHitClickEventTags = ['A']
-        var unwantedTagValues = ["", "javascript:", "javascript:_", "javascript:{}", "javascript:void_0__"]
+        var unwantedTagValues = [ "", "javascript:", "javascript:;", "javascript:{}", "javascript:void(0)" ]
 
         for (var item = 0; item < pageHitClickEventTags.length; item++) {
           if (event.target.tagName == pageHitClickEventTags[item]) {
@@ -118,27 +122,23 @@ function pageHitWindowClick (event) {
 
   if (isPageHitClickEvent(event)) {
     var pageHit = cPageHit(event)
-    pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
-      console.log(data)
-    })
-    //event.stopPropagation()
+    try {
+      pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
 
 window.addEventListener("load", function (event) {
   var pageHit = cPageHit()
-  pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
-    console.log(data)
-  })
+  try {
+    pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
+    })
+  } catch (err) {
+    console.error(err, "[INFO] page hit logging is", pageHit.status());
+  }
 })
-window.addEventListener("click", pageHitWindowClick, true)  // capturing phase is enabled to apply the event down the DOM and override any stopped bubbling
-//document.addEventListener("click", pageHitWindowClick, true)
-/*var windowFrame
-
-for (index = 0; (window.frames.length > index); index++) {
-  windowFrame = window.frames[index]
-  //windowFrame.addEventListener("click", window.top.pageHitWindowClick)
-  windowFrame.addEventListener("click", function () { console.log("child:", document.title, "top:", window.top.document.title) })
-  console.log("child:", windowFrame.document.title, "top:", window.top.document.title)
-  console.log("child:", windowFrame.document.URL, "top:", window.top.document.URL)
-} */
+// capturing phase is enabled to apply the event down the DOM and override any stopped bubbling
+window.addEventListener("click", pageHitWindowClick, true)

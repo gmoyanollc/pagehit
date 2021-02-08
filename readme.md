@@ -1,5 +1,5 @@
 # readme.md
-Page-Hit collects basic requester and navigation event data.  Every mouse click on the site triggers a Page Hit event.  Only navigation clicks are persisted as a Page Hit for the aggregation and analysis of site activity.
+Page-Hit collects basic requester and navigation event data.  Every mouse click on the site triggers a Page Hit event.  Navigation Page Hit events are persisted for aggregation and analysis of user agents and site activity.
 
 For a developer, the standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most open source libraries also support JSON, such as [Drill] (https://drill.apache.org/), [Zeppelin] (https://zeppelin.apache.org/), and [d3] (https://d3js.org).  
 
