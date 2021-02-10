@@ -1,5 +1,11 @@
 function cPageHit (clickEvent) {
 
+  var config = {
+    spListName: "",
+    spMetadataType:  "",
+    status: "enabled"
+  }
+
   try {
   var pageHit = {
     apmSessionId:     getCookie("MRHSession"),
@@ -73,10 +79,10 @@ function cPageHit (clickEvent) {
     }
   
     startTime = Date.now()
-    var requestBody = "{ '__metadata': { 'type': 'SP.Data.Page_x005f_hitListItem' }, 'data': '" + JSON.stringify(pageHit) + "'}"
+    var requestBody = "{ '__metadata': { 'type': " + config.spMetadataType + " }, 'data': '" + JSON.stringify(pageHit) + "'}"
     var xmlHttpRequest = new XMLHttpRequest()
     xmlHttpRequest.addEventListener("readystatechange", xmlHttpRequestListener)
-    xmlHttpRequest.open("POST", request.siteUrl + "/_api/web/lists/getbytitle(%27page_hit%27)/items", true)
+    xmlHttpRequest.open("POST", request.siteUrl + "/_api/web/lists/getbytitle(%27" + config.spListName + "%27)/items", true)
     xmlHttpRequest.setRequestHeader("accept", "application/json; odata=verbose")
     xmlHttpRequest.setRequestHeader("content-type", "application/json; odata=verbose")
     xmlHttpRequest.setRequestHeader("X-RequestDigest", document.getElementById("__REQUESTDIGEST").value)
@@ -86,12 +92,26 @@ function cPageHit (clickEvent) {
   }
 
   return {
+    config: {
+      get: function () { 
+        return config
+      },
+      set: {
+        spListName: function(spListName) {
+            config.spListName = spListName;
+          },
+        spMetadataType: function(spMetadataType) {
+            config.spMetadataType = spMetadataType;
+          },
+        status: function(enable) {
+          if (enable)
+            config.status = "enabled"
+          else 
+            config.status = "disabled";
+        }
+      }
+    },
     send: function (request, resolve) { addListItem(request, resolve) },
-    status: function () { 
-      if (pageHit.userId != "") 
-        return "enabled" 
-      else 
-        return "disabled" }
   }
 }
 
@@ -134,10 +154,13 @@ function pageHitWindowClick (event) {
 window.addEventListener("load", function (event) {
   var pageHit = cPageHit()
   try {
+    pageHit.config.set.spListName(document.scripts[document.scripts.length - 1].getAttribute('sp-list-name'));
+    pageHit.config.set.spMetadataType(document.scripts[document.scripts.length - 1].getAttribute('sp-metadata-type'));
+    pageHit.config.set.status(document.scripts[document.scripts.length - 1].getAttribute('enable'));
     pageHit.send( { "siteUrl": _spPageContextInfo.webAbsoluteUrl }, function (data) {
     })
   } catch (err) {
-    console.error(err, "[INFO] page hit logging is", pageHit.status());
+    console.error(err, { pageHitConfig: pageHit.config.get() } );
   }
 })
 // capturing phase is enabled to apply the event down the DOM and override any stopped bubbling

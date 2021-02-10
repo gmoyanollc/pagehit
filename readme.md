@@ -1,11 +1,32 @@
 # readme.md
 Page-Hit collects basic requester and navigation event data.  Every mouse click on the site triggers a Page Hit event.  Navigation Page Hit events are persisted for aggregation and analysis of user agents and site activity.
 
+## Usage
+Load `c-page-hit.js` from an HTML file.
+
+``` html
+
+  <script src="./c-page-hit/c-page-hit.js" ></script>
+
+```
+
+### Vue Project Setup
+
+1. Copy `c-page-hit.js` into the project's `./public` folder.
+
+``` 
+  mkdir ./public/c-page-hit
+  cp ../c-page-hit/src/c-page-hit.js ./public/c-page-hit/
+
+```
+2. Add a script tag to the project's `./public/index.html` file.
+
+## Data Model
 For a developer, the standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most open source libraries also support JSON, such as [Drill] (https://drill.apache.org/), [Zeppelin] (https://zeppelin.apache.org/), and [d3] (https://d3js.org).  
 
 For a user who does not have programming skills, the open source product [ECharts] (https://echarts.apache.org) is an option to explore for interactive web-based visualization and analysis.  Even databases and spreadsheets may also import the JSON format for analysis and visualization.
 
-## Page-Hit Data Points
+### Page-Hit Data Points
 The Page-Hit data points are the following:
 
  * APM (Access Policy Manager) Session Identifier
@@ -18,7 +39,7 @@ The Page-Hit data points are the following:
  * Context Hyperlink Reference
  * Click Target
 
-### Mapping
+#### Mapping
 
   "apmSessionId":     Response.Cookie.MRHSession
   "timestamp":        Response.Header.Date
@@ -30,7 +51,7 @@ The Page-Hit data points are the following:
   "contextHref":      window.location.href
   "click":            document.event.target
 
-### JSON sample
+#### JSON sample
 
 ``` json
   {
@@ -52,7 +73,7 @@ The Page-Hit data points are the following:
   }
 ```
 
-## Session Data Points
+### Session Data Points
 Session Data Points are derived from Page-Hit data that is consolidated and aggregated by Session.
 
 A process is executed at a specified time to produce Session Data Points for a time interval.
@@ -68,7 +89,7 @@ Session Data Points are the following:
  * End Time
  * Click Hyperlink Path
 
-### Count Metrics
+#### Count Metrics
 Several count metrics are available from the session data points.
 
 Counts are available for the following:
@@ -82,4 +103,4 @@ Counts are available for the following:
   * Users
 
 ---
-20191203
+20210208
