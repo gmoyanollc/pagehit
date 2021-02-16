@@ -1,0 +1,25 @@
+{
+  "name": "c-page-hit",
+  "version": "1.2.0",
+  "description": "collects basic requester and navigation event data",
+  "main": "null",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "null",
+    "test:unit": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "null"
+  },
+  "keywords": [
+    "null"
+  ],
+  "author": "g",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^26.6.3"
+  }
+}

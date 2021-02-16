@@ -2,11 +2,23 @@
 Page-Hit collects basic requester and navigation event data.  Every mouse click on the site triggers a Page Hit event.  Navigation Page Hit events are persisted for aggregation and analysis of user agents and site activity.
 
 ## Usage
-Load `c-page-hit.js` from an HTML file.
+
+1. Load `c-page-hit.js` at the top of the HTML page.
 
 ``` html
 
-  <script src="./c-page-hit/c-page-hit.js" ></script>
+  <script async src="./c-page-hit/c-page-hit.js" ></script>
+
+```
+
+2. Initialize a PageHit instance at the bottom of the page.
+
+``` javascript
+
+  var pageHit = PageHit();
+  pageHit.config.set.spListName("page_hit");
+  pageHit.config.set.spMetadataType("SP.Data.Page_x005f_hitListItem");
+  pageHit.pageContext.set();
 
 ```
 
@@ -19,7 +31,7 @@ Load `c-page-hit.js` from an HTML file.
   cp ../c-page-hit/src/c-page-hit.js ./public/c-page-hit/
 
 ```
-2. Add a script tag to the project's `./public/index.html` file.
+2. Follow the steps above in Usage for the project's `./public/index.html` file.
 
 ## Data Model
 For a developer, the standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most open source libraries also support JSON, such as [Drill] (https://drill.apache.org/), [Zeppelin] (https://zeppelin.apache.org/), and [d3] (https://d3js.org).  

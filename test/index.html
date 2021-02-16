@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>c-page-hit</title>
+    <script src="../src/c-page-hit.js" ></script>
+  </head>
+  <body>
+    <div>
+      <a href="https://startpage.com" target="_blank">Start Page</a>
+    </div>
+  </body>
+  <script>
+    var pageHit = PageHit();
+    pageHit.config.set.spListName("page_hit");
+    pageHit.config.set.spMetadataType("SP.Data.Page_x005f_hitListItem");
+    pageHit.pageContext.set();
+    // capturing phase is enabled to apply the event down the DOM and override any stopped bubbling
+    window.addEventListener("click", pageHit.windowClick, true)
+  </script>
+</html>
