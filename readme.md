@@ -11,14 +11,26 @@ Page-Hit collects basic requester and navigation event data.  Every mouse click 
 
 ```
 
-2. Initialize a PageHit instance at the bottom of the page.
+2. Initialize a `PageHit` instance at the bottom of the page.
 
 ``` javascript
 
-  var pageHit = PageHit();
-  pageHit.config.set.spListName("page_hit");
-  pageHit.config.set.spMetadataType("SP.Data.Page_x005f_hitListItem");
-  pageHit.pageContext.set();
++  var pageHit = PageHit();
++  pageHit.config.set.spListName("page_hit");
++  pageHit.config.set.spMetadataType("SP.Data.Page_x005f_hitListItem");
++  pageHit.pageContext.set();
+
+```
+
+3. Add the `PageHit` instance as a DOM event listener.
+
+``` javascript
+
+   var pageHit = PageHit();
+   pageHit.config.set.spListName("page_hit");
+   pageHit.config.set.spMetadataType("SP.Data.Page_x005f_hitListItem");
+   pageHit.pageContext.set();
++  window.addEventListener("click", pageHit.windowClick, true);
 
 ```
 
@@ -31,7 +43,7 @@ Page-Hit collects basic requester and navigation event data.  Every mouse click 
   cp ../page-hit/src/page-hit.js ./public/page-hit/
 
 ```
-2. Follow the steps above in Usage for the project's `./public/index.html` file.
+2. Follow the steps above in section `Usage`.  Modify the file `index.html` in the project's `./public` folder.
 
 ## Data Model
 For a developer, the standard JSON format is simple and flat.  The format is easy to marshal into JavaScript as an object for browsers and apps.  Most open source libraries also support JSON, such as [Drill] (https://drill.apache.org/), [Zeppelin] (https://zeppelin.apache.org/), and [d3] (https://d3js.org).  
