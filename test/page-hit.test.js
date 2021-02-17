@@ -1,14 +1,14 @@
-const PageHit = require('../src/c-page-hit.js')
+const PageHit = require('../src/page-hit.js')
 
-describe("c-page-hit html", () => {
+describe("page-hit html", () => {
   beforeEach(() => {
     document.documentElement.innerHTML = `'<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>c-page-hit</title>
+    <title>page-hit</title>
   <body>
   </body>
-  <script sp-list-name="page_hit" sp-metadata-type="SP.Data.Page_x005f_hitListItem" enabled=true src="../src/c-page-hit.js" ></script>
+  <script sp-list-name="page_hit" sp-metadata-type="SP.Data.Page_x005f_hitListItem" enabled=true src="../src/page-hit.js" ></script>
 </html>'`;
   });
 
@@ -24,7 +24,7 @@ describe("c-page-hit html", () => {
 
 });
 
-describe("c-page-hit script", () => {
+describe("page-hit script", () => {
 
   test("get pageContext", () => {
     const pageHit = PageHit();

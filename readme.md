@@ -3,11 +3,11 @@ Page-Hit collects basic requester and navigation event data.  Every mouse click 
 
 ## Usage
 
-1. Load `c-page-hit.js` at the top of the HTML page.
+1. Load `page-hit.js` at the top of the HTML page.
 
 ``` html
 
-  <script async src="./c-page-hit/c-page-hit.js" ></script>
+  <script async src="./page-hit/page-hit.js" ></script>
 
 ```
 
@@ -24,11 +24,11 @@ Page-Hit collects basic requester and navigation event data.  Every mouse click 
 
 ### Vue Project Setup
 
-1. Copy `c-page-hit.js` into the project's `./public` folder.
+1. Copy `page-hit.js` into the project's `./public` folder.
 
 ``` 
-  mkdir ./public/c-page-hit
-  cp ../c-page-hit/src/c-page-hit.js ./public/c-page-hit/
+  mkdir ./public/page-hit
+  cp ../page-hit/src/page-hit.js ./public/page-hit/
 
 ```
 2. Follow the steps above in Usage for the project's `./public/index.html` file.
